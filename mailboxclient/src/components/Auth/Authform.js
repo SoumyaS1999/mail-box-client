@@ -1,10 +1,13 @@
 import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { authActions } from "../Store/auth";
 import { useNavigate } from "react-router-dom";
 
 const Authform = () => {
   const navigate = useNavigate();
   const emailRef = useRef();
   const passwordRef = useRef();
+  const dispatch = useDispatch();
 
   const loginHandler = (event) => {
     event.preventDefault();
@@ -43,9 +46,9 @@ const Authform = () => {
       })
       .then((data) => {
         //authCtx.login(data.idToken);
-        // dispatch(
-        //   authActions.login({ token: data.idToken, useremail: data.localId }),
-        //  );
+        dispatch(
+          authActions.login({ token: data.idToken, useruuid: data.email }),
+        );
         console.log(data);
         navigate("/");
       })

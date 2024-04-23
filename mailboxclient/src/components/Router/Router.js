@@ -2,10 +2,12 @@ import { Route, Routes } from "react-router-dom";
 import Authform from "../Auth/Authform";
 import Index from "../Index/Index";
 import Signup from "../Auth/Signup";
+import ComposeMail from "../Compose/Compose";
 const routePath = {
   Home: "/",
   Login: "/login",
   Signup: "/signup",
+  Compose: "/compose",
 };
 const Routers = () => {
   return (
@@ -13,6 +15,7 @@ const Routers = () => {
       <Route path={routePath.Home} element={<Index />} />
       <Route path={routePath.Login} element={<Authform />} />
       <Route path={routePath.Signup} element={<Signup />} />
+      <Route path={routePath.Compose} element={<ComposeMail />} />
     </Routes>
   );
 };

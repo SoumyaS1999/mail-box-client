@@ -1,7 +1,16 @@
 import { Link, NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../Store/auth";
 import "../../App.css";
 
 const Header = () => {
+  const islogin = useSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    dispatch(authActions.logout());
+  };
+
   return (
     <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
       <div class="container-fluid">
@@ -28,12 +37,13 @@ const Header = () => {
               </NavLink>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
-                Features
-              </a>
+              <NavLink className="nav-link" to="/compose">
+                Compose Mail
+              </NavLink>
             </li>
-            <li class="nav-item">
-              <li className="nav-item">
+
+            <li className="nav-item">
+              {!islogin && (
                 <NavLink
                   className="nav-link"
                   to="/login"
@@ -41,7 +51,18 @@ const Header = () => {
                 >
                   Login
                 </NavLink>
-              </li>
+              )}
+            </li>
+            <li className="nav-item">
+              {islogin && (
+                <button
+                  className="nav-link"
+                  onClick={logoutHandler}
+                  style={{ position: "fixed", right: "3px" }}
+                >
+                  Logout
+                </button>
+              )}
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">
