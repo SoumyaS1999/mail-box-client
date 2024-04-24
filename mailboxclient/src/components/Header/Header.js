@@ -41,6 +41,16 @@ const Header = () => {
                 Compose Mail
               </NavLink>
             </li>
+            <li class="nav-item">
+              <NavLink className="nav-link" to="/inbox">
+                Inbox
+              </NavLink>
+            </li>
+            <li class="nav-item">
+              <NavLink className="nav-link" to="/sentbox">
+                SentBox
+              </NavLink>
+            </li>
 
             <li className="nav-item">
               {!islogin && (
