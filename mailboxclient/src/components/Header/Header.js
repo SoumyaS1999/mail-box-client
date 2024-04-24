@@ -42,6 +42,18 @@ const Header = () => {
               </NavLink>
             </li>
 
+            <li class="nav-item">
+              <NavLink className="nav-link" to="/inbox">
+                Inbox
+              </NavLink>
+            </li>
+
+            <li class="nav-item">
+              <NavLink className="nav-link" to="/sentbox">
+                Sentbox
+              </NavLink>
+            </li>
+
             <li className="nav-item">
               {!islogin && (
                 <NavLink
@@ -63,11 +75,6 @@ const Header = () => {
                   Logout
                 </button>
               )}
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                About
-              </a>
             </li>
           </ul>
         </div>

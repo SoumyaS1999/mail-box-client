@@ -3,11 +3,15 @@ import Authform from "../Auth/Authform";
 import Index from "../Index/Index";
 import Signup from "../Auth/Signup";
 import ComposeMail from "../Compose/Compose";
+import Inbox from "../Inbox/Inbox";
+import Sentbox from "../Sentbox/Sentbox";
 const routePath = {
   Home: "/",
   Login: "/login",
   Signup: "/signup",
   Compose: "/compose",
+  Inbox: "/inbox",
+  Sentbox: "/sentbox",
 };
 const Routers = () => {
   return (
@@ -16,6 +20,8 @@ const Routers = () => {
       <Route path={routePath.Login} element={<Authform />} />
       <Route path={routePath.Signup} element={<Signup />} />
       <Route path={routePath.Compose} element={<ComposeMail />} />
+      <Route path={routePath.Inbox} element={<Inbox />} />
+      <Route path={routePath.Sentbox} element={<Sentbox />} />
     </Routes>
   );
 };

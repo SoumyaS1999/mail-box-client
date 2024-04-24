@@ -6,8 +6,12 @@ const ComposeMail = () => {
   const [body, setBody] = useState("");
   const currentUser = localStorage.getItem("uuid");
   const encodeEmail = (email) => {
+    if (!email) {
+      return "";
+    }
     return email.replace(/@/g, "-at-").replace(/\./g, "-dot-");
   };
+
   const encodedRecipient = encodeEmail(recipient);
   const encodedCurrentUser = encodeEmail(currentUser);
 
