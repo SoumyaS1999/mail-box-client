@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const emailRef = useRef();
@@ -42,11 +43,12 @@ const Signup = () => {
       .then((data) => {
         //authCtx.login(data.idToken);
         // dispatch(authActions.login(data.idToken));
+        toast.info("user signed up");
         navigate("/login");
         console.log(data);
       })
       .catch((err) => {
-        alert(err.message);
+        toast.warning(err.message);
       });
 
     //dispatch(authActions.login());

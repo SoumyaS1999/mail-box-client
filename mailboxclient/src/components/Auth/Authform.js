@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "../Store/auth";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Authform = () => {
   const navigate = useNavigate();
@@ -50,10 +51,11 @@ const Authform = () => {
           authActions.login({ token: data.idToken, useruuid: data.email }),
         );
         console.log(data);
+        toast.success("User Logged in");
         navigate("/");
       })
       .catch((err) => {
-        alert(err.message);
+        toast.error(err.message);
       });
 
     //dispatch(authActions.login());

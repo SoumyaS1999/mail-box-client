@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+
+// Import toastify css file
+import "react-toastify/dist/ReactToastify.css";
+
+// toast-configuration method,
+// it is compulsory method.
+//toast.configure();
 
 const ComposeMail = () => {
   const [recipient, setRecipient] = useState("");
@@ -59,6 +67,8 @@ const ComposeMail = () => {
     setRecipient("");
     setSubject("");
     setBody("");
+
+    toast.success("Mail send successfully");
   };
 
   return (

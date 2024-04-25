@@ -19,7 +19,7 @@ const authSlice = createSlice({
       state.useruuid = action.payload.useruuid;
       localStorage.setItem("token", action.payload.token);
       localStorage.setItem("uuid", action.payload.useruuid);
-      alert("You are logged in");
+      //alert("You are logged in");
       console.log("useremail is:", state.useruuid);
     },
     logout(state) {
@@ -28,7 +28,7 @@ const authSlice = createSlice({
       localStorage.removeItem("uuid");
       state.token = null;
       state.useruuid = null;
-      alert("You are logged out");
+      //alert("You are logged out");
     },
   },
 });

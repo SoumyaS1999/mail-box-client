@@ -2,6 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../Store/auth";
 import "../../App.css";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const islogin = useSelector((state) => state.auth.isAuthenticated);
@@ -9,6 +10,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(authActions.logout());
+    toast.error("logged out");
   };
 
   return (
