@@ -20,6 +20,7 @@ const ComposeMail = () => {
       subject,
       body,
       timestamp: new Date().toISOString(),
+      isread: false,
     };
 
     // POST request to send mail to sender's sentbox

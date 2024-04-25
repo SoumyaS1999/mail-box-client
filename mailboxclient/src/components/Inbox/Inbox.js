@@ -2,50 +2,78 @@ import { useState, useEffect } from "react";
 
 const Inbox = () => {
   const [inboxmail, setInboxmail] = useState([]);
-  const currentuser = localStorage.getItem("uuid");
   const [idmail, setIdmail] = useState([]);
-  const encodeEmail = (email) => {
-    if (!email) {
-      return "";
-    }
-    return email.replace(/@/g, "-at-").replace(/\./g, "-dot-");
-  };
-  const encodedCurrentUser = encodeEmail(currentuser);
+  const currentuser = localStorage.getItem("uuid");
+  const [encodedCurrentUser, setEncodedCurrentUser] = useState("");
 
-  const fetchmails = async () => {
-    try {
-      const response = await fetch(
-        `https://mail-box-client-e1fde-default-rtdb.firebaseio.com/users/${encodedCurrentUser}/sent.json`,
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch movies");
+  useEffect(() => {
+    const encodeEmail = (email) => {
+      if (!email) {
+        return "";
       }
-      const data = await response.json();
+      return email.replace(/@/g, "-at-").replace(/\./g, "-dot-");
+    };
 
-      const loadedMails = [];
+    if (currentuser) {
+      const encodedUser = encodeEmail(currentuser);
+      setEncodedCurrentUser(encodedUser);
+    }
+  }, [currentuser]);
 
-      for (const key in data) {
-        loadedMails.push({
-          id: key,
-          sender: data[key].from,
-          receiver: data[key].to,
-          subject: data[key].subject,
-          body: data[key].body,
-          time: data[key].timestamp,
-        });
+  useEffect(() => {
+    const fetchmails = async () => {
+      try {
+        const response = await fetch(
+          `https://mail-box-client-e1fde-default-rtdb.firebaseio.com/users/${encodedCurrentUser}/inbox.json`,
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch movies");
+        }
+        const data = await response.json();
+
+        const loadedMails = [];
+
+        for (const key in data) {
+          loadedMails.push({
+            id: key,
+            sender: data[key].from,
+            receiver: data[key].to,
+            subject: data[key].subject,
+            body: data[key].body,
+            time: data[key].timestamp,
+            isRead: data[key].isRead || false, // Add isRead property
+          });
+        }
 
         setInboxmail(loadedMails);
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
+    };
+
+    if (encodedCurrentUser) {
+      fetchmails();
     }
+  }, [encodedCurrentUser]);
+
+  const markMailAsRead = async (id) => {
+    const updatedMails = inboxmail.map((mail) => {
+      if (mail.id === id) {
+        mail.isRead = true;
+        // Update isRead property in backend
+        updateIsReadInBackend(id, true);
+      }
+      return mail;
+    });
+    setInboxmail(updatedMails);
   };
 
   const fetchMailById = async (id) => {
+    // Fetch mail by id function...
     console.log("id is", id);
     try {
       const response = await fetch(
-        `https://mail-box-client-e1fde-default-rtdb.firebaseio.com/users/${encodedCurrentUser}/sent/${id}.json`,
+        `https://mail-box-client-e1fde-default-rtdb.firebaseio.com/users/${encodedCurrentUser}/inbox/${id}.json`,
       );
       if (!response.ok) {
         console.log("failed to sent");
@@ -69,9 +97,24 @@ const Inbox = () => {
     }
   };
 
-  useEffect(() => {
-    fetchmails();
-  }, []);
+  const updateIsReadInBackend = async (id, isRead) => {
+    try {
+      await fetch(
+        `https://mail-box-client-e1fde-default-rtdb.firebaseio.com/users/${encodedCurrentUser}/inbox/${id}.json`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            isRead: isRead,
+          }),
+        },
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div>
@@ -81,7 +124,13 @@ const Inbox = () => {
           <ul>
             {inboxmail.map((mail) => (
               <li key={mail.id}>
-                <button onClick={() => fetchMailById(mail.id)}>
+                <button
+                  onClick={() => {
+                    fetchMailById(mail.id);
+                    markMailAsRead(mail.id);
+                  }}
+                  style={{ backgroundColor: mail.isRead ? "green" : "white" }}
+                >
                   <strong>From:</strong> {mail.sender}
                   <br />
                   <strong>To:</strong> {mail.receiver}
